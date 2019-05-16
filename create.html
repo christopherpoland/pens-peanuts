@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <div id = "pageTitle">{% block title %}{{ "Create" }}{% endblock %}</div>
+{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+  <form method="post" name = "create-form" class = "comment-form" enctype=multipart/form-data>
+    <input name="title" id="createTitle" placeholder="Title" class = "comment" required>
+    <div id="createLocationDateWrapper">
+      <input name="real-date" id="createRealDate" placeholder="Real Date" type="date" class = "comment" required>
+      <input type=file name=file required>
+    </div>
+    <select name="section" required class = comment>
+      <option value="pens" selected>Pens</option>
+      <option value="pages">Pages</option>
+      <option value="people">People</option>
+      <option value="places">Places</option>
+      <option value="peanuts">Peanuts</option>
+    </select>
+    <textarea name="create-preview" id="createPreview" placeholder="Preview" class="comment comment-box" required></textarea>
+    <textarea name="create-body" id="createBody" placeholder="Body" class="comment comment-box" required></textarea>
+    <input type="submit" class="comment comment-submit" value="Create Post">
+  </form>
+</div>
+{% endblock %}

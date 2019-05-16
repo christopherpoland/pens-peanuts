@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>P&P {% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href="{{ url_for('static', filename='contentpages.css') }}" rel="stylesheet" type="text/css" media = "screen and (min-width: 500px)">
+    <link href="{{ url_for('static', filename='mobile.css') }}" rel="stylesheet" type="text/css" media = "screen and (max-width: 500px)">
+    <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond|Raleway" rel="stylesheet">
+    <link rel="shortcut icon" href="#" />
+    {% block style %}{% endblock %}
+  </head>
+  <body>
+    <header id="header">
+      <a id = "headerLink" href = {{ url_for('main.display')}}><h1 id = "headerTitle">Pens and Peanuts</h1></a>
+
+      <div id = "smallNav">
+        <img id = "menu" src="../static/images/icons/menu.png">
+        <img id = "close" src="../static/images/icons/close.png">
+      </div>
+      {% if session.user %}
+      <div class = "hidden-mobile nav-link-wrapper">
+        <span>{{ session.user.name }}</span>
+        <a href = "{{ url_for('auth.logout')}}" class="nav-link">Logout</a>
+          {% if session.user.user_approval == 'author' %}
+          <a href = "{{ url_for('main.create')}}" class="nav-link">Create</a>
+            {% if session.user['user_auth'] == 'dev' %}
+            <a href = "{{ url_for('main.approve')}}" class="nav-link">Approve</a>
+            <a href = "{{ url_for('main.users')}}" class="nav-link">Users</a>
+            <a href = "{{ url_for('main.posts')}}" class="nav-link">Posts</a>
+      </div>
+          {% endif %}
+        {% endif %}
+      {% else %}
+
+      {% endif %}
+    </header>
+    <div id = "navbarWrapper">
+      <div id = "navbar">
+          <a href = "{{ url_for('page-dir.show', category="pens")}}" class = "nav-option" id = "pens">Pens</a>
+          <a href = "{{ url_for('page-dir.show', category="pages")}}" class = "nav-option" id = "pages">Pages</a>
+          <a href = "{{ url_for('page-dir.show', category="people")}}" class = "nav-option" id = "people">People</a>
+          <a href = "{{ url_for('page-dir.show', category="places")}}" class = "nav-option" id = "places">Places</a>
+          <a href = "{{ url_for('page-dir.show', category="peanuts")}}" class = "nav-option" id = "peanuts">Peanuts</a>
+          {% if session.user %}
+            <hr class = "hidden-content navbar-hr">
+              {% if session.user.user_approval == 'author' %}
+              <a href = "{{ url_for('main.create')}}" class="hidden-content nav-option">Create</a>
+                {% if session.user['user_auth'] == 'dev' %}
+                <a href = "{{ url_for('main.approve')}}" class="hidden-content nav-option">Approve</a>
+                <a href = "{{ url_for('main.users')}}" class="hidden-content nav-option">Users</a>
+                <a href = "{{ url_for('main.posts')}}" class="hidden-content nav-option">Posts</a>
+                {% endif %}
+              {% endif %}
+              <a href = "{{ url_for('auth.logout')}}" class="hidden-content nav-option">Logout</a>
+          {% endif %}
+      </div>
+      <!--<div id = "contactMobile" class = "contact-mobile">
+        <form autocomplete="off">
+          Name:
+          <input id = "nameInput" type = "text" target = "_blank" name = "name" size = "30">
+          Email:
+          <input id = "emailInput" type = "email" name = "email" placeholder = "example@example.com" size = "30">
+          Message:
+          <textarea id = "messageInput" height = "100px" width: 100%></textarea>
+          <input type="submit">
+        </form>
+      </div> -->
+    </div>
+
+    <section>
+      {% block header %}{% endblock %}
+      {% for message in get_flashed_messages() %}
+        <div class="flash-wrapper" id="flashDisplay">
+          <div class="flash">
+            <div class="flash-inside">
+              <img id = "alert" src="{{ url_for('static', filename='images/icons/notification.png') }}">
+              <div class = "flash-text">{{ message }}</div>
+            </div>
+            <div id="closeWrapper">
+              <img id="closeFlash" src="{{ url_for('static', filename='images/icons/close.png') }}">
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+      {% block intro %}{% endblock %}
+
+      {% block content %}{% endblock %}
+
+      {% macro comments(comments, section, article) -%}
+      {% for post in posts %}
+
+        <article class="post">
+          <div class="post-name-date-wrapper">
+            <p class="post-name">{{ post['name'] }}</p>
+
+            <p class="post-date">{{ datetime.strptime(str(post['created']).split(".")[0], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone('UTC')).astimezone(local_tz).strftime("%b %d, '%y at %l:%M %p") }} </p>
+          </div>
+          <p class="post-body">{{ post['body'] }}</p>
+        </article>
+      {% endfor %}
+      {%- endmacro %}
+
+      {% macro form(section,article) -%}
+        <form method="post" name = "comment-form" class = "comment-form">
+          <textarea name="comment" id="comment" placeholder="Comment" class="comment comment-box" required></textarea>
+          {% if session.user == None %}
+          <div class="name-email-wrapper">
+            <input name="name" id="name" placeholder="Name"  class="comment comment-name"required>
+            <input name="email" id="email" type="email" placeholder="Email"  class="comment comment-email"required>
+          </div>
+          {% endif %}
+          <input name="article" value = "{{ article }}" placeholder="article" class="comment comment-article hidden">
+          <input name="section" value = "{{ section }}" placeholder="section" class="comment comment-article hidden">
+          <input type="submit" class="comment comment-submit" value="Post Comment">
+        </form>
+      {%- endmacro %}
+
+      {% macro body(articles) -%}
+      {% for art in articles %}
+      <div class = "pagePreviewWrapper">
+        <div class = "preview-box">
+          <div class = "preview-photo-box">
+            {% if art['preview_photo'] %}
+            <img class = "preview-photo" src="{{ url_for('static', filename='images/' + art['preview_photo']) }}">
+            {% else %}
+            <img class = "preview-photo" src="{{ url_for('static', filename='images/black.jpg') }}">
+            {% endif %}
+          </div>
+          <div class = "preview-text-wrapper">
+            <div class = "title-wrapper">
+              <div class = "preview-title">{{ art['title'] }}</div>
+              <div class="date-edit-wrapper">
+                <div class = "preview-date">{{ art['real_date'].strftime("%b %d, '%y") }}</div>
+                {% if session.user.id == art['author_id'] or session.user.user_auth == 'dev' %}
+                  <a class= "edit" href = "{{ url_for('main.edit',article=art.title)}}">Edit</a>
+                {% endif %}
+              </div>
+            </div>
+            <div class = "preview-text-container">
+              <div class = "preview-text">{{ art['preview'] }}</div>
+              <div class = "expand-wrapper">
+                <div id = "expand">
+                  <img id = "expandIcon" src="{{ url_for('static', filename='images/icons/expand.png') }}">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!--Full content -->
+        <div class = "expanded-content hidden">
+          <div class = "expanded-title">{{ art['title'] }}</div>
+          <div class = "expanded-detail-wrapper">
+            <h6 class = "expanded-date">{{ art['real_date'].strftime("%b %d, '%y") }}</h6>
+            <h6 class = "expanded-author">Author: {{ art['author'] }}</h6>
+          </div>
+          <hr>
+          {{ Markup(art['body'])|markdown }}
+
+          <hr>
+          <div class = "form-wrapper">{{ form(art['section'], art['title'].replace(" ","_").lower()) }}</div>
+          <div class = "comment-wrapper">{{ comments(posts, art['section'], art['title'].replace(" ","_").lower()) }}</div>
+
+          <div class = "collapse-wrapper">
+            <div id = "collapse">
+              <img id = "collapseIcon" src="{{ url_for('static', filename='images/icons/collapse.png') }}">
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      {% endfor %}
+      {%- endmacro %}
+    </section>
+    <script src="../static/scripts/tester.js"></script>
+
+  </body>
+</html>

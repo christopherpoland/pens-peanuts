@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block style %}
+{% endblock %}
+{% from "base.html" import body with context %}
+
+{% block header %}
+  <br>
+{% endblock %}
+
+{% block intro %}
+<div class = "section-blurb">
+  <div>
+  <p>Welcome to Pens & Peanuts,</p>
+  <br>
+  <p>I have long wanted to start a blog to spread my thoughts on the little things I like to write about. From pens to peanuts, the categories of such little things conveniently start with the letter ‘p’. Thank you for joining me on my journey as I quest from the depths of being a closet writer.</p>
+  <br>
+  <p>Happy perusing, pondering, and pursuits.</p>
+  </div>
+  <div id="closeWrapper">
+    <img id="closeIntro" src="{{ url_for('static', filename='images/icons/close.png') }}">
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+  {{ body(articles) }}
+{% endblock %}

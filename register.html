@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <div id = "pageTitle">{% block title %}{{ "Register" }}{% endblock %}</div>
+{% endblock %}
+
+{% block content %}
+<div class="form-wrapper" autocomplete="on">
+  <form method="post" name = "register-form" class = "comment-form">
+    <input name="name" placeholder="Display name" class = "comment" autocomplete="name" required>
+    <input name="email" type="email" placeholder="Email" class = "comment" autocomplete="email"required>
+    <input name="password" type="password" placeholder="Enter password" class = "comment" autocomplete="password" required>
+    <textarea name="message" placeholder="Type a message about why you want to register" class="comment comment-box"></textarea>
+    <input type="submit" id="registerSubmit" class="comment comment-submit" value="Register">
+  </form>
+</div>
+{% endblock %}

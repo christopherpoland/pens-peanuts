@@ -1,0 +1,41 @@
+/* GENERAL */
+body {
+  --background: #6cb
+}
+.active-nav {
+  background-color: var(--background) !important;
+  color: black !important;
+  pointer-events: none;
+}
+.active-nav:hover {
+  background-color: var(--background) !important;
+}
+/* PREVIEWS */
+#previewColombia {
+  object-position: 0 0; /* Use these to move the display frame of the photo */
+}
+#previewMongolRally {
+  object-position: 40% 0; /* Use these to move the display frame of the photo */
+}
+#previewHipTribute {
+  object-position: 50% 0; /* Use these to move the display frame of the photo */
+}
+@media (max-width: 500px) {
+  #previewColombia {
+    object-position: 0 0; /* Use these to move the display frame of the photo if it is portrait!! **MOBILE** */
+  }
+  #previewMongolRally {
+
+  }
+  #previewHipTribute {
+
+  }
+}
+/*1. COLUMBIA */
+#columbiaWrapper {
+  flex-direction: column;
+}
+#colombiaJeff {
+  height: 200px;
+  width: 200px;
+}

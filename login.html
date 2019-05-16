@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <div id = "pageTitle">{% block title %}{{ "Login" }}{% endblock %}</div>
+{% endblock %}
+
+{% block content %}
+<div class="form-wrapper" autocomplete="on">
+  <form method="post" name = "register-form" class = "comment-form">
+    <input name="email" type="email" placeholder="Email" class = "comment" autocomplete="email"required>
+    <input name="password" type="password" placeholder="Enter password" class = "comment" autocomplete="password" required>
+    <input type="submit" class="comment comment-submit" value="Log In">
+  </form>
+</div>
+{% endblock %}

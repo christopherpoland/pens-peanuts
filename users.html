@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div id = "pageTitle">{% block title %}{{ "Users" }}{% endblock %}</div>
+{% endblock %}
+
+{% block content %}
+{% for user in users %}
+<form method="post" name = "user-form" class = "comment-form">
+  {{ user['name'] }}
+  {{ user['user_approval'] }}
+  {{ user['user_auth'] }}
+  {{ user['id'] }}
+  <input name="user" value={{ user['id'] }} class = "hidden" required>
+  <select name="approve_user">
+    <option value="approved" selected>Approved</option>
+    <option value="delete">Delete</option>
+    {% if user['user_approval'] == 'author' %}
+    <option value="pending">Pending</option>
+    <option value="author" selected>Author</option>
+    {% elif user['user_approval'] == 'pending' %}
+    <option value="pending" selected>Pending</option>
+    <option value="author">Author</option>
+    {% else %}
+    <option value="author">Author</option>
+    <option value="pending">Pending</option>
+    {% endif %}
+  </select>
+  <input type="submit" class="comment comment-submit" value="Submit">
+</form>
+{% endfor %}
+
+{% endblock %}

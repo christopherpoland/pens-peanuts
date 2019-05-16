@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <div id = "pageTitle">{% block title %}{{ "Edit" }}{% endblock %}</div>
+{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+  <form method="post" name = "create-form" class = "comment-form" enctype=multipart/form-data>
+    <input name="title" placeholder="Title" value="{{ data['title'] }}" class = "comment" required>
+    <div>
+      <input name="real-date" placeholder="Real Date" type="date" value="{{ str(data['real_date']).split(" ")[0] }}" class = "comment" required>
+      <input type=file name=file>
+    </div>
+    <select name="section" required class = "comment">
+      <option value="pens" {% if data.section == 'pens' %} selected {% endif %}>Pens</option>
+      <option value="pages" {% if data.section == 'pages' %} selected {% endif %}>Pages</option>
+      <option value="people" {% if data.section == 'people' %} selected {% endif %}>People</option>
+      <option value="places" {% if data.section == 'places' %} selected {% endif %}>Places</option>
+      <option value="peanuts" {% if data.section == 'peanuts' %} selected {% endif %}>Peanuts</option>
+    </select>
+    <textarea name="create-preview" id="createPreview" placeholder="Preview" class="comment comment-box" required>{{ data['preview'] }}</textarea>
+    <textarea name="create-body" id="createBody" placeholder="Body" class="comment comment-box" required>{{ data.body }}</textarea>
+    <input type="submit" class="comment comment-submit" value="Submit">
+  </form>
+</div>
+{% endblock %}

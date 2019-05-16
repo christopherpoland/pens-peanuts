@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div id = "pageTitle">{% block title %}{{ "Approve" }}{% endblock %}</div>
+{% endblock %}
+
+{% block content %}
+<h1>Comments</h1>
+<form method="post" name = "approve-form" class = "comment-form">
+{% for i in posts %}
+  {{ i['section'] }}
+  <p>{{ i['article'] }}</p>
+  {{ i['body'] }}
+  {{ i['name'] }}
+  {{ i['email'] }}
+  {{ i['created'] }}
+  <b>{{ i['approval'] }}</b>
+
+  <input name="id" value= "{{ i['id'] }}" required>
+  <input type="radio" name="approve_comment" value="approved"> Approve<br>
+  <input type="radio" name="approve_comment" value="delete"> Delete<br>
+  <input type="submit" class="comment comment-submit" value="Submit">  <br>
+  <br>
+
+{% endfor %}
+</form>
+
+
+
+{% endblock %}

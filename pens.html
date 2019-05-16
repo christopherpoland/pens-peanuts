@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block style %}
+{% endblock %}
+{% from "base.html" import body with context %}
+
+
+
+
+{% block header %}
+  <div class = page-title-wrapper>
+    <div id = "pageTitle">{% block title %}{{ category.title() }}{% endblock %}</div>
+    <img id="info" class="hidden-content" src="{{ url_for('static', filename='images/icons/info.png') }}">
+  </div>
+{% endblock %}
+
+{% block intro %}
+<div class = "section-blurb">
+  <div>
+  <p>Welcome to {{ category.title() }},</p>
+  {% if category == 'pens' %}
+  <br>
+  <p>These posts are about journaling. I personally like to use a pen and a pocketbook, but there are many ways to approach it. That which is paramount is to have a good system so that you keep doing it, and I would like to share my experiences with what works well –  sprinkled into reviews of pens and pocketbooks.</p>
+  <br>
+  <p>How do you reflect?</p>
+
+  {% elif category == 'pages' %}
+  <br>
+  <p>These posts are about reading and writing. Along with book reviews you will find posts on writing endeavours of my own – including poems, short stories, and pieces that will hopefully find a home in a real book someday.</p>
+  <br>
+  <p>What do you like to read?</p>
+
+  {% elif category == 'people' %}
+  <br>
+  <p>These posts are about people – family, friends, students, strangers – you name it. I am forever curious about what I can learn from talking to people and I hope you are too. These posts will include a little bit of everything.</p>
+  <br>
+  <p>Who do you learn from?</p>
+
+  {% elif category == 'places' %}
+  <br>
+  <p>I have been extremely fortunate to see many parts of Canada and many parts of the world – both with loved ones and on my own. These posts are about the good, the bad, and the ugly of such adventures I have had and of such adventures that lay ahead. You will also find posts on packing and planning for adventures of your own.</p>
+  <br>
+  <p>Where would you like to go?</p>
+
+  {% elif category == 'peanuts' %}
+  <br>
+  <p>This is my bread and butter so to speak – especially the latter. A special friend once told me I should document my vivid and elaborate experiences that I have with different types of peanut butter. In these posts, you too will be a part of such accounts, along with those of non-peanut nut butters as well.</p>
+  <br>
+  <p>What nut butters do you frequent?</p>
+  {% endif %}
+  </div>
+    <div id="closeWrapper">
+      <img id="closeIntro" src="{{ url_for('static', filename='images/icons/close.png') }}">
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+  {{ body(articles) }}
+{% endblock %}

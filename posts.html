@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div id = "pageTitle">{% block title %}{{ "Posts" }}{% endblock %}</div>
+{% endblock %}
+
+
+{% block content %}
+
+<h3>Pending Posts</h3>
+{% if not posts_pend %}
+  <p>No posts to authorize</p>
+{% endif %}
+{% for post in posts_pend %}
+<form method="post" name = "post-form" class = "comment-form">
+  {{ post.title }}
+  {{ post.author }}
+  {{ post.section }}
+  <input name="id" class = "hidden" value= "{{ post['id'] }}" required>
+  <input type="radio" name="approve_post" value="approved"> Approve<br>
+  <input type="radio" name="approve_post" value="delete"> Delete<br>
+  <input type="submit" class="comment comment-submit" value="Submit">  <br>
+</form>
+{% endfor %}
+
+<h3>Approved Posts</h3>
+{% if not posts_app %}
+  <p><a href = "{{ url_for('main.create')}}" class="nav-link">Create a post!</a></p>
+{% endif %}
+{% for post in posts_app %}
+<form method="post" name = "post-form" class = "comment-form">
+  {{ post.title }}
+  {{ post.author }}
+  {{ post.section }}
+  <input name="id" class = "hidden" value= "{{ post['id'] }}" required>
+  <input type="radio" name="approve_post" value="delete"> Delete<br>
+  <input type="submit" class="comment comment-submit" value="Submit">  <br>
+</form>
+{% endfor %}
+
+{% endblock %}
